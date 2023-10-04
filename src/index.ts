@@ -9,30 +9,22 @@ dotenv.config();
 
 app.use(express.json());
 // configure the data base 
-
 export const AppDataSource = new DataSource({
     type: "postgres",
     url: process.env.DB_URL,
     synchronize: true,
     logging: true,
-    entities: [],
-    subscribers: [],
-    migrations: [],
 });
 
 AppDataSource.initialize().then(async()=>{
 // logic of db connected
 console.log('DB is initiated !!!!')
-console.log(dotenv.config()); 
 const tableNames = AppDataSource.entityMetadatas.map((metadata) => metadata.tableName);
 // calling the API 
 app.get('/',(req,res)=>{
     res.send('Welcome to home page...')
 });
 
-
-// app.use(registerRouter);
-// app.use(loginRouter);
 
 app.listen(port,()=>console.log(`The app is running on port ${port}`));
 }).catch((error)=>console.log('error'))
