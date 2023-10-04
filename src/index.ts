@@ -1,20 +1,21 @@
 import express from 'express';
 import { DataSource } from 'typeorm';
+import dotenv from 'dotenv';
 
 const app = express();
 let port = 4000;
+dotenv.config();
+
+
 app.use(express.json());
 // configure the data base 
+
 export const AppDataSource = new DataSource({
     type: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: "postgres",
-    password: "123",
-    database: "auth_db",
+    url: process.env.DB_URL,
     synchronize: true,
     logging: true,
-    // entities: [],
+    entities: [],
     subscribers: [],
     migrations: [],
 });
@@ -22,7 +23,7 @@ export const AppDataSource = new DataSource({
 AppDataSource.initialize().then(async()=>{
 // logic of db connected
 console.log('DB is initiated !!!!')
-// table names 
+console.log(dotenv.config()); 
 const tableNames = AppDataSource.entityMetadatas.map((metadata) => metadata.tableName);
 // calling the API 
 app.get('/',(req,res)=>{
